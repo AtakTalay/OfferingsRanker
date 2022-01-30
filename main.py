@@ -11,6 +11,22 @@ PATH = "C:\Program Files (x86)\chromedriver.exe"
 
 driver = webdriver.Chrome(PATH)
 
+
+driver.get("https://stars.bilkent.edu.tr/homepage/plain_offerings")
+time.sleep(10)
+
+driver.get("https://stars.bilkent.edu.tr/homepage/academic_units")
+time.sleep(5)
+page_source = driver.page_source
+soup = BeautifulSoup(page_source, 'lxml')
+tags = soup.find_all('a')
+start = False
+for tag in tags:
+    if tag.text == "Courses":
+        department_link = str(tag)[str(tag).find("?"): str(tag).find(">") - 1]
+        driver.get("https://stars.bilkent.edu.tr/homepage/courses.php" + department_link)
+        time.sleep(3)
+"""
 driver.get("https://stars.bilkent.edu.tr/evalreport/index.php?mode=scn&semCode=20101&crsCode=ENG&crsNum=101&brCode=114")
 time.sleep(5)
 page_source = driver.page_source
@@ -23,8 +39,8 @@ for tag in tags:
         start = True
         print((float(tag[21].replace(",",".")) + float(tag[32].replace(",","."))) / 2)
         break
-
-
+    
+"""
 """
 soup = BeautifulSoup(page_source, 'lxml')
 tags = soup.find_all('tr', id =lambda x: x and x.startswith(course_dep))
